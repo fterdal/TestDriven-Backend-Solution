@@ -1,5 +1,6 @@
 const db = require("./db");
-const { Review, Restaurant } = require("./index");
+const Review = require("./review");
+const Restaurant = require("./restaurant");
 
 const seed = async () => {
   db.logging = false;
@@ -10,7 +11,7 @@ const seed = async () => {
     { text: "This is a third review" },
   ]);
 
-  console.log(`👥 Created ${reviews.length} reviews`);
+  console.log(`💬 Created ${reviews.length} reviews`);
 
   const restaurants = await Restaurant.bulkCreate([
     {
@@ -28,7 +29,7 @@ const seed = async () => {
   await reviews[1].setRestaurant(restaurants[1]);
   await reviews[2].setRestaurant(restaurants[2]);
 
-  console.log(`🏫 Created ${restaurants.length} restaurants`);
+  console.log(`🍔 Created ${restaurants.length} restaurants`);
 
   console.log("🌱 Seeded the database");
   db.close();
