@@ -7,21 +7,21 @@ describe("Restaurant Model", () => {
       location: "123 Main St",
       cuisine_type: "Italian",
       price_range: 2,
-      open_since: "09:00:00",
+      open_since: "2025-01-01",
     },
     {
       name: "Ramen House",
       location: "456 Oak Ave",
       cuisine_type: "Japanese",
       price_range: 3,
-      open_since: "11:00:00",
+      open_since: "2025-01-01",
     },
     {
       name: "Shawarma Palace",
       location: "789 Pine Rd",
       cuisine_type: "Middle Eastern",
       price_range: 1,
-      open_since: "10:00:00",
+      open_since: "2025-01-01",
     },
   ];
 
@@ -36,10 +36,21 @@ describe("Restaurant Model", () => {
     }
   });
 
-  it.only("should have a name", async () => {
+  it("should have a name", async () => {
     const restaurant = await Restaurant.findByPk(1);
 
     expect(restaurant.name).toBe(restaurants[0].name);
+  });
+
+  it("requires a name", async () => {
+    const restaurant = Restaurant.build({
+      location: "123 Main St",
+      cuisine_type: "Italian",
+      price_range: 2,
+      open_since: "2025-01-01",
+    });
+
+    await expect(restaurant.validate()).rejects.toThrow();
   });
 
   it("should have a location", async () => {
@@ -54,50 +65,47 @@ describe("Restaurant Model", () => {
     expect(restaurant.cuisine_type).toBe(restaurants[0].cuisine_type);
   });
 
-  it("should have a price range between 1 and 4", async () => {
+  it("should have a price range", async () => {
     const restaurant = await Restaurant.findByPk(1);
 
     expect(restaurant.price_range).toBe(restaurants[0].price_range);
-    expect(restaurant.price_range).toBeGreaterThanOrEqual(1);
-    expect(restaurant.price_range).toBeLessThanOrEqual(4);
   });
 
-  it("should have an open since time", async () => {
+  it("should have an open since date", async () => {
     const restaurant = await Restaurant.findByPk(1);
 
     expect(restaurant.open_since).toBe(restaurants[0].open_since);
   });
 
   it("should validate price_range is within valid range", async () => {
-    const invalidRestaurant = Restaurant.build({
+    const invalidRestaurantAbove = Restaurant.build({
+      name: "Test Restaurant Above",
+      location: "Test Location",
+      cuisine_type: "Test Cuisine",
+      price_range: 5,
+      open_since: "2025-01-01",
+    });
+
+    await expect(invalidRestaurantAbove.validate()).rejects.toThrow();
+
+    const invalidRestaurantBelow = Restaurant.build({
+      name: "Test Restaurant Below",
+      location: "Test Location",
+      cuisine_type: "Test Cuisine",
+      price_range: 0,
+      open_since: "2025-01-01",
+    });
+
+    await expect(invalidRestaurantBelow.validate()).rejects.toThrow();
+
+    const validRestaurant = Restaurant.build({
       name: "Test Restaurant",
       location: "Test Location",
       cuisine_type: "Test Cuisine",
-      price_range: 5, // Invalid: should be 1-4
-      open_since: "12:00:00",
+      price_range: 2,
+      open_since: "2025-01-01",
     });
 
-    await expect(invalidRestaurant.validate()).rejects.toThrow();
-  });
-
-  it("should validate price_range minimum value", async () => {
-    const invalidRestaurant = Restaurant.build({
-      name: "Test Restaurant",
-      location: "Test Location",
-      cuisine_type: "Test Cuisine",
-      price_range: 0, // Invalid: should be 1-4
-      open_since: "12:00:00",
-    });
-
-    await expect(invalidRestaurant.validate()).rejects.toThrow();
-  });
-
-  it("should require all required fields", async () => {
-    const incompleteRestaurant = Restaurant.build({
-      name: "Test Restaurant",
-      // Missing required fields: price_range, open_since
-    });
-
-    await expect(incompleteRestaurant.validate()).rejects.toThrow();
+    await expect(validRestaurant.validate()).resolves.not.toThrow();
   });
 });

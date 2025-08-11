@@ -12,21 +12,21 @@ describe("Restaurant Routes", () => {
       location: "123 Main St",
       cuisine_type: "Italian",
       price_range: 2,
-      open_since: "09:00:00",
+      open_since: "2025-01-01",
     },
     {
       name: "Ramen House",
       location: "456 Oak Ave",
       cuisine_type: "Japanese",
       price_range: 3,
-      open_since: "11:00:00",
+      open_since: "2025-01-01",
     },
     {
       name: "Shawarma Palace",
       location: "789 Pine Rd",
       cuisine_type: "Middle Eastern",
       price_range: 1,
-      open_since: "10:00:00",
+      open_since: "2025-01-01",
     },
   ];
 
@@ -99,7 +99,7 @@ describe("Restaurant Routes", () => {
       location: "Test Location",
       cuisine_type: "Test Cuisine",
       price_range: 2,
-      open_since: "12:00:00",
+      open_since: "2025-01-01",
     };
     const response = await request(app)
       .post("/api/restaurants")

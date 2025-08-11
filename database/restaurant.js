@@ -6,7 +6,7 @@ const db = require("./db");
  * location: string
  * cuisine_type: string
  * price_range: number (1-4 dollar signs)
- * open_since: time
+ * open_since: date only
  */
 const Restaurant = db.define("restaurant", {
   name: {
@@ -21,15 +21,14 @@ const Restaurant = db.define("restaurant", {
   },
   price_range: {
     type: DataTypes.INTEGER,
-    allowNull: false,
     validate: {
       min: 1,
       max: 4,
     },
   },
   open_since: {
-    type: DataTypes.TIME,
-    allowNull: false,
+    type: DataTypes.DATEONLY,
+    allowNull: true,
   },
 });
 
