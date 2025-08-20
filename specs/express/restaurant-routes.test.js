@@ -44,7 +44,6 @@ describe("Restaurant Routes", () => {
     }
   });
 
-  // TIER 1: GET ALL
   it("should return all restaurants", async () => {
     const response = await request(app).get("/api/restaurants");
     expect(response.status).toBe(200);
@@ -54,15 +53,12 @@ describe("Restaurant Routes", () => {
     expect(responseNames).toEqual(expectedNames);
   });
 
-  // TIER 2: GET ONE
   it("should return a single restaurant", async () => {
     const response = await request(app).get("/api/restaurants/2");
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("Ramen House");
   });
 
-  // TIER 2.5: GET REVIEWS
-  // NOTE: You'll need to finish the Review model and associate the reviews to the restaurants first
   describe("Reviews", () => {
     const reviews = [
       {
@@ -92,7 +88,6 @@ describe("Restaurant Routes", () => {
     });
   });
 
-  // TIER 3: CREATE
   it("should create a new restaurant", async () => {
     const newRestaurant = {
       name: "Test Restaurant",
@@ -108,7 +103,6 @@ describe("Restaurant Routes", () => {
     expect(response.body.name).toBe(newRestaurant.name);
   });
 
-  // TIER 4: DELETE
   it("should delete a restaurant", async () => {
     const response = await request(app).delete("/api/restaurants/1");
     expect(response.status).toBe(204);
@@ -116,7 +110,6 @@ describe("Restaurant Routes", () => {
     expect(allRestaurants.length).toBe(restaurants.length - 1);
   });
 
-  // TIER 5: UPDATE
   it("should update a restaurant", async () => {
     const restaurantUpdates = { name: "Updated Restaurant" };
     const response = await request(app)

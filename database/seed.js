@@ -1,6 +1,4 @@
-const db = require("./db");
-const Review = require("./review");
-const Restaurant = require("./restaurant");
+const { db, Review, Restaurant } = require("./index");
 
 const seed = async () => {
   db.logging = false;
